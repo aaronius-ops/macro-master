@@ -2085,7 +2085,7 @@ const QUESTIONS = [
     format: 'calc',
     text: 'If the marginal propensity to consume (MPC) is 0.8, what is the fiscal spending multiplier?',
     answer: 5,
-    tolerance: 0.1,
+    tolerance: 0.5,
     unit: '',
     steps: [
       'Multiplier = 1 / (1 − MPC)',
@@ -2136,7 +2136,7 @@ const QUESTIONS = [
     format: 'calc',
     text: 'The nominal interest rate is 6% and the inflation rate is 2.5%. What is the real interest rate?',
     answer: 3.5,
-    tolerance: 0.1,
+    tolerance: 0.5,
     unit: '%',
     steps: [
       'Fisher equation: r = i − π',
@@ -2152,7 +2152,7 @@ const QUESTIONS = [
     format: 'calc',
     text: 'A country has a debt-to-GDP ratio of 80%. The real interest rate is 5% and the GDP growth rate is 3%. What primary surplus (as % of GDP) is needed to stabilize the debt ratio?',
     answer: 1.6,
-    tolerance: 0.1,
+    tolerance: 0.5,
     unit: '% of GDP',
     steps: [
       'Required primary surplus = (r − g) × (Debt/GDP)',
@@ -2224,7 +2224,7 @@ const QUESTIONS = [
     format: 'calc',
     text: 'If the MPC is 0.75, what is the tax multiplier?',
     answer: -3,
-    tolerance: 0.1,
+    tolerance: 0.5,
     unit: '',
     steps: [
       'Tax multiplier = −MPC / (1 − MPC)',
@@ -2273,7 +2273,7 @@ const QUESTIONS = [
     format: 'calc',
     text: 'In the loanable funds market, savings = 200 + 50r and investment = 500 − 100r, where r is the real interest rate in percent. What is the equilibrium real interest rate?',
     answer: 2,
-    tolerance: 0.1,
+    tolerance: 0.5,
     unit: '%',
     steps: [
       'Set savings = investment:',

@@ -731,7 +731,8 @@ const Game = (() => {
     if (round.phase !== 'question') return;
 
     const input = $('calc-input');
-    const userAnswer = parseFloat(input.value);
+    const rawValue = input.value.trim().replace(/[,%$]/g, ''); // strip formatting chars
+    const userAnswer = parseFloat(rawValue);
     if (isNaN(userAnswer)) {
       showToast('Enter a number');
       return;
@@ -743,7 +744,12 @@ const Game = (() => {
 
     const q = round.questions[round.currentIndex];
     const tolerance = q.tolerance || 0.5;
-    const correct = Math.abs(userAnswer - q.answer) <= tolerance;
+    // Check both the raw answer and, for percentage units, the decimal equivalent
+    let correct = Math.abs(userAnswer - q.answer) <= tolerance;
+    if (!correct && q.unit && q.unit.includes('%') && q.answer > 1) {
+      // Accept decimal form (e.g., 0.10 for 10%)
+      correct = Math.abs(userAnswer * 100 - q.answer) <= tolerance;
+    }
 
     SRS.recordAnswer(q.id, correct);
 
