@@ -219,24 +219,45 @@ const Game = (() => {
   // ===== TOPIC PICKER =====
   function showTopicPicker(mode) {
     round.mode = mode;
+
+    // Determine format filter for this mode
+    const formatMap = {
+      mythbuster: 'tf', curveshifter: 'curve', calculator: 'calc',
+      advisor: 'policy', boss: 'boss'
+    };
+    const fmt = formatMap[mode]; // undefined for lightning (standard MC)
+
+    // Get the full pool for this mode (all topics)
+    const modePool = fmt
+      ? QUESTIONS.filter(q => q.format === fmt)
+      : QUESTIONS.filter(q => !q.format);
+
+    // If the total pool is small (<= questionsPerRound), skip topic picker and use all
+    const qpr = settings.questionsPerRound || QUESTIONS_PER_ROUND;
+    if (modePool.length <= qpr) {
+      startRound(null);
+      return;
+    }
+
     const topicList = $('topic-list');
     topicList.innerHTML = '';
 
     const mastery = SRS.getTopicMastery(QUESTIONS);
 
-    // "All Topics" button
+    // "All Topics" button — show total count for this mode
     const allBtn = document.createElement('button');
     allBtn.className = 'topic-btn';
-    allBtn.innerHTML = '<span>All Topics (Interleaved)</span>';
+    allBtn.innerHTML = `<span>All Topics (Interleaved)</span><span class="topic-count">${modePool.length} Qs</span>`;
     allBtn.addEventListener('click', () => startRound(null));
     topicList.appendChild(allBtn);
 
-    // Individual topics (only those with questions)
-    const topicsWithQuestions = TOPICS.filter(t =>
-      QUESTIONS.some(q => q.topic === t.id)
-    );
+    // Individual topics — only those with questions matching this mode's format
+    const topicsWithQuestions = TOPICS.map(t => {
+      const count = modePool.filter(q => q.topic === t.id).length;
+      return { topic: t, count };
+    }).filter(({ count }) => count > 0);
 
-    topicsWithQuestions.forEach(topic => {
+    topicsWithQuestions.forEach(({ topic, count }) => {
       const btn = document.createElement('button');
       btn.className = 'topic-btn';
 
@@ -245,7 +266,7 @@ const Game = (() => {
         ? `<span class="topic-mastery ${m.level}">${Math.round(m.accuracy * 100)}%</span>`
         : '<span class="topic-mastery red">New</span>';
 
-      btn.innerHTML = `<span>${topic.name}</span>${masteryBadge}`;
+      btn.innerHTML = `<span>${topic.name}</span><span class="topic-count">${count} Qs</span>${masteryBadge}`;
       btn.addEventListener('click', () => startRound(topic.id));
       topicList.appendChild(btn);
     });

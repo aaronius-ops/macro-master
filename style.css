@@ -262,6 +262,14 @@ h2 {
 .topic-mastery.green { background: var(--green-bg); color: var(--green); }
 .topic-mastery.gold { background: rgba(253, 181, 21, 0.2); color: var(--cal-gold); }
 
+.topic-btn .topic-count {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-left: auto;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
 /* ===== Game Screen ===== */
 #question-card {
   background: var(--bg-card);
