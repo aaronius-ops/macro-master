@@ -725,6 +725,62 @@ const Game = (() => {
   }
 
   // ===== CALCULATOR CHALLENGE =====
+  let calcBuffer = '0'; // current keypad value as string
+
+  function calcUpdateDisplay() {
+    $('calc-display-value').textContent = calcBuffer;
+  }
+
+  function calcHandleKey(key) {
+    if (round.phase !== 'question') return;
+
+    if (key === 'submit') {
+      handleCalcAnswer();
+      return;
+    }
+    if (key === 'clear') {
+      calcBuffer = '0';
+      calcUpdateDisplay();
+      return;
+    }
+    if (key === 'backspace') {
+      if (calcBuffer.length <= 1 || (calcBuffer.length === 2 && calcBuffer[0] === '-')) {
+        calcBuffer = '0';
+      } else {
+        calcBuffer = calcBuffer.slice(0, -1);
+      }
+      calcUpdateDisplay();
+      return;
+    }
+    if (key === '-') {
+      if (calcBuffer.startsWith('-')) {
+        calcBuffer = calcBuffer.slice(1) || '0';
+      } else if (calcBuffer === '0') {
+        calcBuffer = '-';
+      } else {
+        calcBuffer = '-' + calcBuffer;
+      }
+      calcUpdateDisplay();
+      return;
+    }
+    if (key === '.') {
+      if (calcBuffer.includes('.')) return; // only one decimal
+      calcBuffer += '.';
+      calcUpdateDisplay();
+      return;
+    }
+    // Digit 0-9
+    if (calcBuffer === '0') {
+      calcBuffer = key;
+    } else if (calcBuffer === '-') {
+      calcBuffer = '-' + key;
+    } else {
+      if (calcBuffer.replace(/[-.]/, '').length >= 10) return; // max length
+      calcBuffer += key;
+    }
+    calcUpdateDisplay();
+  }
+
   function showCalcQuestion() {
     if (round.currentIndex >= round.questions.length) {
       endRound();
@@ -741,34 +797,26 @@ const Game = (() => {
     $('calc-unit').textContent = q.unit || '';
     $('calc-feedback').classList.add('hidden');
 
-    const input = $('calc-input');
-    input.value = '';
-    input.disabled = false;
-    input.focus();
-    $('calc-submit').disabled = false;
-
-    // Reset sign toggle
-    const signBtn = $('calc-sign-toggle');
-    signBtn.classList.remove('negative');
-    round.calcNegative = false;
+    // Reset keypad
+    calcBuffer = '0';
+    calcUpdateDisplay();
+    // Enable all keys
+    document.querySelectorAll('#calc-keypad .key-btn').forEach(b => b.disabled = false);
   }
 
   function handleCalcAnswer() {
     if (round.phase !== 'question') return;
 
-    const input = $('calc-input');
-    const rawValue = input.value.trim().replace(/[,%$]/g, ''); // strip formatting chars
+    const rawValue = calcBuffer.replace(/[,%$]/g, '');
     let userAnswer = parseFloat(rawValue);
     if (isNaN(userAnswer)) {
       showToast('Enter a number');
       return;
     }
-    // Apply sign toggle
-    if (round.calcNegative) userAnswer = -Math.abs(userAnswer);
 
     round.phase = 'feedback';
-    input.disabled = true;
-    $('calc-submit').disabled = true;
+    // Disable keypad
+    document.querySelectorAll('#calc-keypad .key-btn').forEach(b => b.disabled = true);
 
     const q = round.questions[round.currentIndex];
     const tolerance = q.tolerance || 0.5;
@@ -1589,10 +1637,16 @@ const Game = (() => {
       return;
     }
 
-    // Calculator: Enter to submit
-    if (round.mode === 'calculator' && round.phase === 'question' && e.key === 'Enter') {
+    // Calculator: route keyboard to keypad
+    if (round.mode === 'calculator' && round.phase === 'question') {
       e.preventDefault();
-      handleCalcAnswer();
+      if (e.key === 'Enter') { calcHandleKey('submit'); return; }
+      if (e.key === 'Backspace' || e.key === 'Delete') { calcHandleKey('backspace'); return; }
+      if (e.key === 'Escape') { /* fall through to Escape handler below */ }
+      else if (e.key === 'c' || e.key === 'C') { calcHandleKey('clear'); return; }
+      else if (e.key === '-') { calcHandleKey('-'); return; }
+      else if (e.key === '.') { calcHandleKey('.'); return; }
+      else if (e.key >= '0' && e.key <= '9') { calcHandleKey(e.key); return; }
       return;
     }
 
@@ -1693,16 +1747,12 @@ const Game = (() => {
       showScreen('menu');
     });
 
-    // Calculator buttons
-    $('calc-submit').addEventListener('click', handleCalcAnswer);
-    $('calc-sign-toggle').addEventListener('click', () => {
-      if (round.phase !== 'question') return;
-      round.calcNegative = !round.calcNegative;
-      const btn = $('calc-sign-toggle');
-      btn.classList.toggle('negative', round.calcNegative);
-      // Update placeholder to hint at sign
-      $('calc-input').placeholder = round.calcNegative ? 'Negative answer' : 'Your answer';
-      $('calc-input').focus();
+    // Calculator keypad
+    document.querySelectorAll('#calc-keypad .key-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        calcHandleKey(btn.dataset.key);
+      });
     });
     $('calc-quit').addEventListener('click', () => {
       stopTimer();
