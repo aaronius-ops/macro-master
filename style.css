@@ -868,6 +868,31 @@ h2 {
   gap: 10px;
 }
 
+.sign-toggle-btn {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.sign-toggle-btn:hover {
+  border-color: var(--cal-gold);
+  color: var(--cal-gold);
+}
+
+.sign-toggle-btn.negative {
+  background: rgba(231, 76, 60, 0.15);
+  border-color: var(--red);
+  color: var(--red);
+}
+
 #calc-input {
   flex: 1;
   background: rgba(255,255,255,0.06);

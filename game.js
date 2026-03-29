@@ -746,6 +746,11 @@ const Game = (() => {
     input.disabled = false;
     input.focus();
     $('calc-submit').disabled = false;
+
+    // Reset sign toggle
+    const signBtn = $('calc-sign-toggle');
+    signBtn.classList.remove('negative');
+    round.calcNegative = false;
   }
 
   function handleCalcAnswer() {
@@ -753,11 +758,13 @@ const Game = (() => {
 
     const input = $('calc-input');
     const rawValue = input.value.trim().replace(/[,%$]/g, ''); // strip formatting chars
-    const userAnswer = parseFloat(rawValue);
+    let userAnswer = parseFloat(rawValue);
     if (isNaN(userAnswer)) {
       showToast('Enter a number');
       return;
     }
+    // Apply sign toggle
+    if (round.calcNegative) userAnswer = -Math.abs(userAnswer);
 
     round.phase = 'feedback';
     input.disabled = true;
@@ -1688,6 +1695,15 @@ const Game = (() => {
 
     // Calculator buttons
     $('calc-submit').addEventListener('click', handleCalcAnswer);
+    $('calc-sign-toggle').addEventListener('click', () => {
+      if (round.phase !== 'question') return;
+      round.calcNegative = !round.calcNegative;
+      const btn = $('calc-sign-toggle');
+      btn.classList.toggle('negative', round.calcNegative);
+      // Update placeholder to hint at sign
+      $('calc-input').placeholder = round.calcNegative ? 'Negative answer' : 'Your answer';
+      $('calc-input').focus();
+    });
     $('calc-quit').addEventListener('click', () => {
       stopTimer();
       showScreen('menu');
