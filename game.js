@@ -1689,6 +1689,11 @@ const Game = (() => {
     $('summary-again').addEventListener('click', () => showTopicPicker(round.mode));
     $('summary-menu').addEventListener('click', () => showScreen('menu'));
 
+    // Continue buttons (mobile-friendly advance)
+    document.querySelectorAll('.continue-btn').forEach(btn => {
+      btn.addEventListener('click', advance);
+    });
+
     // Keyboard
     document.addEventListener('keydown', handleKeydown);
   }
@@ -1700,5 +1705,5 @@ const Game = (() => {
     init();
   }
 
-  return { state, getLevel };
+  return { state, getLevel, advance };
 })();

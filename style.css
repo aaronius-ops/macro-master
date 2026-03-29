@@ -381,17 +381,42 @@ h2 {
   margin-bottom: 12px;
 }
 
-#feedback-action {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+/* ===== Continue Button (all modes) ===== */
+.continue-btn {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 16px auto 6px;
+  padding: 14px 24px;
+  background: var(--cal-gold);
+  color: var(--bg-dark);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: all var(--transition);
 }
 
-#feedback-action kbd {
+.continue-btn:hover {
+  background: #FFD54F;
+  transform: translateY(-1px);
+}
+
+.continue-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 2px;
+}
+
+.continue-hint kbd {
   background: var(--berkeley-blue);
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 
 /* ===== Summary Screen ===== */
@@ -725,18 +750,6 @@ h2 {
   margin-bottom: 12px;
 }
 
-#myth-feedback-action {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-#myth-feedback-action kbd {
-  background: var(--berkeley-blue);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-}
 
 /* ===== Curve Shifter Mode ===== */
 #curve-progress {
@@ -803,8 +816,6 @@ h2 {
 #curve-feedback.correct #curve-feedback-text { color: var(--green); }
 #curve-feedback.incorrect #curve-feedback-text { color: var(--red); }
 #curve-explanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
-#curve-feedback-action { font-size: 0.8rem; color: var(--text-secondary); }
-#curve-feedback-action kbd { background: var(--berkeley-blue); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; }
 
 .curve-choice {
   padding: 10px 14px !important;
@@ -901,8 +912,6 @@ h2 {
 #calc-feedback.correct #calc-feedback-text { color: var(--green); }
 #calc-feedback.incorrect #calc-feedback-text { color: var(--red); }
 #calc-explanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
-#calc-feedback-action { font-size: 0.8rem; color: var(--text-secondary); }
-#calc-feedback-action kbd { background: var(--berkeley-blue); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; }
 
 .calc-steps-title {
   font-weight: 700;
@@ -1001,18 +1010,6 @@ h2 {
   margin-bottom: 12px;
 }
 
-#policy-feedback-action {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-#policy-feedback-action kbd {
-  background: var(--berkeley-blue);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-}
 
 /* ===== Boss Battle Mode ===== */
 #boss-header {
@@ -1078,8 +1075,6 @@ h2 {
 #boss-feedback.correct #boss-feedback-text { color: var(--green); }
 #boss-feedback.incorrect #boss-feedback-text { color: var(--red); }
 #boss-explanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
-#boss-feedback-action { font-size: 0.8rem; color: var(--text-secondary); }
-#boss-feedback-action kbd { background: var(--berkeley-blue); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; }
 
 /* ===== Achievements ===== */
 #achievements-grid {
