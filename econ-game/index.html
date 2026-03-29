@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macro Master — MBA 201b Study Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Bar: always visible during gameplay -->
+  <header id="top-bar">
+    <div id="xp-display">
+      <span id="level-badge">Lv 1</span>
+      <div id="xp-bar-container">
+        <div id="xp-bar-fill"></div>
+      </div>
+      <span id="xp-text">0 XP</span>
+    </div>
+    <div id="streak-display">
+      <span id="streak-icon">&#x1f525;</span>
+      <span id="streak-count">0</span>
+    </div>
+    <div id="timer-display" class="hidden">
+      <span id="timer-text">60</span>s
+    </div>
+  </header>
+
+  <!-- Toast notification -->
+  <div id="toast" class="hidden"></div>
+
+  <!-- Main Menu -->
+  <main id="menu-screen" class="screen active">
+    <h1>Macro Master</h1>
+    <p class="subtitle">MBA 201b Final Exam Prep</p>
+
+    <div id="mode-grid">
+      <button class="mode-btn" data-mode="lightning">
+        <span class="mode-icon">&#x26A1;</span>
+        <span class="mode-name">Lightning Round</span>
+        <span class="mode-desc">Rapid-fire MC, 60s timer</span>
+      </button>
+      <button class="mode-btn" data-mode="mythbuster">
+        <span class="mode-icon">&#x1F6A8;</span>
+        <span class="mode-name">Myth Buster</span>
+        <span class="mode-desc">TRUE / FALSE exam traps</span>
+      </button>
+      <button class="mode-btn" data-mode="curveshifter">
+        <span class="mode-icon">&#x1F4C8;</span>
+        <span class="mode-name">Curve Shifter</span>
+        <span class="mode-desc">IS-MP & AD-IA diagrams</span>
+      </button>
+      <button class="mode-btn" data-mode="calculator">
+        <span class="mode-icon">&#x1F5A9;</span>
+        <span class="mode-name">Calculator Challenge</span>
+        <span class="mode-desc">Numeric problems</span>
+      </button>
+      <button class="mode-btn" data-mode="advisor">
+        <span class="mode-icon">&#x1F3DB;</span>
+        <span class="mode-name">Policy Advisor</span>
+        <span class="mode-desc">Scenario-based decisions</span>
+      </button>
+      <button class="mode-btn" data-mode="boss">
+        <span class="mode-icon">&#x1F432;</span>
+        <span class="mode-name">Boss Battle</span>
+        <span class="mode-desc">Multi-step synthesis</span>
+      </button>
+    </div>
+
+    <button id="exam-start-btn" class="exam-launch-btn">
+      <span class="exam-launch-icon">&#x1F4DD;</span>
+      <span class="exam-launch-text">
+        <span class="exam-launch-name">Exam Simulator</span>
+        <span class="exam-launch-desc">25 MC questions &middot; 150 min &middot; Mirrors the real final</span>
+      </span>
+    </button>
+
+    <div id="menu-footer">
+      <button id="mastery-btn" class="footer-btn">Mastery Map</button>
+      <button id="achievements-btn" class="footer-btn">Achievements</button>
+      <button id="stats-btn" class="footer-btn">Stats</button>
+      <button id="settings-btn" class="footer-btn">Settings</button>
+      <button id="reset-btn" class="footer-btn danger">Reset</button>
+    </div>
+  </main>
+
+  <!-- Topic Picker (shown before Lightning Round) -->
+  <main id="topic-screen" class="screen">
+    <h2>Pick a Topic</h2>
+    <p class="subtitle">Or choose "All Topics" for interleaved practice</p>
+    <div id="topic-list"></div>
+    <button id="topic-back" class="back-btn">&#x2190; Back</button>
+  </main>
+
+  <!-- Game Screen (Lightning Round) -->
+  <main id="game-screen" class="screen">
+    <div id="question-card">
+      <div id="question-topic" class="question-meta"></div>
+      <div id="question-text"></div>
+      <div id="choices"></div>
+    </div>
+    <div id="feedback-card" class="hidden">
+      <div id="feedback-icon"></div>
+      <div id="feedback-text"></div>
+      <div id="explanation-text"></div>
+      <div id="feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="game-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Game Screen (Myth Buster) -->
+  <main id="myth-screen" class="screen">
+    <div id="myth-progress">
+      <span id="myth-qnum"></span>
+      <span id="myth-speed-bonus" class="hidden">Speed Bonus!</span>
+    </div>
+    <div id="myth-card">
+      <div id="myth-topic" class="question-meta"></div>
+      <div id="myth-statement"></div>
+      <div id="myth-buttons">
+        <button class="myth-btn myth-true" data-answer="0">
+          <span class="myth-key">T</span>
+          <span>TRUE</span>
+        </button>
+        <button class="myth-btn myth-false" data-answer="1">
+          <span class="myth-key">F</span>
+          <span>FALSE</span>
+        </button>
+      </div>
+    </div>
+    <div id="myth-feedback" class="hidden">
+      <div id="myth-feedback-icon"></div>
+      <div id="myth-feedback-text"></div>
+      <div id="myth-explanation"></div>
+      <div id="myth-feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="myth-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Game Screen (Curve Shifter) -->
+  <main id="curve-screen" class="screen">
+    <div id="curve-progress">
+      <span id="curve-qnum"></span>
+    </div>
+    <div id="curve-card">
+      <div id="curve-topic" class="question-meta"></div>
+      <div id="curve-diagram-container">
+        <svg id="curve-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div id="curve-scenario"></div>
+      <div id="curve-choices"></div>
+    </div>
+    <div id="curve-feedback" class="hidden">
+      <div id="curve-feedback-icon"></div>
+      <div id="curve-feedback-text"></div>
+      <div id="curve-explanation"></div>
+      <div id="curve-feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="curve-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Game Screen (Calculator Challenge) -->
+  <main id="calc-screen" class="screen">
+    <div id="calc-progress">
+      <span id="calc-qnum"></span>
+    </div>
+    <div id="calc-card">
+      <div id="calc-topic" class="question-meta"></div>
+      <div id="calc-problem"></div>
+      <div id="calc-input-row">
+        <input type="number" id="calc-input" placeholder="Your answer" step="any" autocomplete="off">
+        <span id="calc-unit"></span>
+        <button id="calc-submit" class="action-btn">Submit</button>
+      </div>
+    </div>
+    <div id="calc-feedback" class="hidden">
+      <div id="calc-feedback-icon"></div>
+      <div id="calc-feedback-text"></div>
+      <div id="calc-steps"></div>
+      <div id="calc-explanation"></div>
+      <div id="calc-feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="calc-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Game Screen (Policy Advisor) -->
+  <main id="policy-screen" class="screen">
+    <div id="policy-progress">
+      <span id="policy-qnum"></span>
+    </div>
+    <div id="policy-card">
+      <div id="policy-role" class="question-meta"></div>
+      <div id="policy-scenario"></div>
+      <div id="policy-choices"></div>
+    </div>
+    <div id="policy-feedback" class="hidden">
+      <div id="policy-feedback-icon"></div>
+      <div id="policy-score-text"></div>
+      <div id="policy-explanation"></div>
+      <div id="policy-feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="policy-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Game Screen (Boss Battle) -->
+  <main id="boss-screen" class="screen">
+    <div id="boss-header">
+      <span id="boss-title"></span>
+      <span id="boss-part-num"></span>
+    </div>
+    <div id="boss-card">
+      <div id="boss-topic" class="question-meta"></div>
+      <div id="boss-text"></div>
+      <div id="boss-choices"></div>
+    </div>
+    <div id="boss-feedback" class="hidden">
+      <div id="boss-feedback-icon"></div>
+      <div id="boss-feedback-text"></div>
+      <div id="boss-explanation"></div>
+      <div id="boss-feedback-action">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</div>
+    </div>
+    <button id="boss-quit" class="back-btn">Esc to Menu</button>
+  </main>
+
+  <!-- Round Summary -->
+  <main id="summary-screen" class="screen">
+    <h2>Round Complete!</h2>
+    <div id="summary-stats"></div>
+    <div id="summary-actions">
+      <button id="summary-again" class="action-btn">Play Again</button>
+      <button id="summary-menu" class="action-btn secondary">Menu</button>
+    </div>
+  </main>
+
+  <!-- Mastery Map -->
+  <main id="mastery-screen" class="screen">
+    <h2>Topic Mastery</h2>
+    <div id="mastery-grid"></div>
+    <button id="mastery-back" class="back-btn">&#x2190; Back</button>
+  </main>
+
+  <!-- Stats Screen -->
+  <main id="stats-screen" class="screen">
+    <h2>Your Stats</h2>
+    <div id="stats-content"></div>
+    <button id="stats-back" class="back-btn">&#x2190; Back</button>
+  </main>
+
+  <!-- Achievements Screen -->
+  <main id="achievements-screen" class="screen">
+    <h2>Achievements</h2>
+    <div id="achievements-grid"></div>
+    <button id="achievements-back" class="back-btn">&#x2190; Back</button>
+  </main>
+
+  <!-- Settings Screen -->
+  <main id="settings-screen" class="screen">
+    <h2>Settings</h2>
+    <div id="settings-content">
+      <div class="setting-row">
+        <label for="setting-timer">Lightning Round Timer</label>
+        <input type="checkbox" id="setting-timer" checked>
+      </div>
+      <div class="setting-row">
+        <label for="setting-qcount">Questions per Round</label>
+        <select id="setting-qcount">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+      <button id="settings-save" class="action-btn">Save Settings</button>
+    </div>
+    <button id="settings-back" class="back-btn">&#x2190; Back</button>
+  </main>
+
+  <!-- Exam Simulator -->
+  <main id="exam-screen" class="screen">
+    <div id="exam-header">
+      <span id="exam-timer">150:00</span>
+      <span id="exam-progress">1 / 25</span>
+    </div>
+    <div id="exam-nav">
+      <div id="exam-question-dots"></div>
+    </div>
+    <div id="exam-card">
+      <div id="exam-topic" class="question-meta"></div>
+      <div id="exam-text"></div>
+      <div id="exam-choices"></div>
+    </div>
+    <div id="exam-bottom-nav">
+      <button id="exam-prev" class="action-btn secondary">&larr; Prev</button>
+      <button id="exam-next" class="action-btn secondary">Next &rarr;</button>
+      <button id="exam-submit" class="action-btn">Submit Exam</button>
+    </div>
+    <button id="exam-quit" class="back-btn">Esc to Quit</button>
+  </main>
+
+  <!-- Exam Results -->
+  <main id="exam-results-screen" class="screen">
+    <h2>Exam Results</h2>
+    <div id="exam-score-card"></div>
+    <h3 id="exam-topic-breakdown-title">Score by Topic</h3>
+    <div id="exam-topic-breakdown"></div>
+    <h3 id="exam-review-title">Question Review</h3>
+    <div id="exam-review-list"></div>
+    <div id="exam-results-actions">
+      <button id="exam-retake" class="action-btn">Retake Exam</button>
+      <button id="exam-results-menu" class="action-btn secondary">Menu</button>
+    </div>
+  </main>
+
+  <!-- Break Reminder (overlay) -->
+  <div id="break-reminder" class="hidden">
+    <div id="break-content">
+      <div id="break-icon">&#x2615;</div>
+      <h3>Time for a Break!</h3>
+      <p>You've been studying for <span id="break-minutes">0</span> minutes and answered <span id="break-questions">0</span> questions this session.</p>
+      <p class="break-tip">Stand up, stretch, grab water. Your brain consolidates better with short breaks!</p>
+      <button id="break-dismiss" class="action-btn">Got it, back to studying</button>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="spaced-repetition.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
