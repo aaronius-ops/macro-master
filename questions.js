@@ -1642,6 +1642,92 @@ const QUESTIONS = [
     source: 'PS4, Finals 2022-2023'
   },
 
+  // MC — Study Plan Gap-fills
+  {
+    id: 'mc-m1-burn',
+    topic: 'banking',
+    text: 'What happens to M1 if someone burns a $100 bill?',
+    choices: [
+      'M1 decreases by $100',
+      'M1 is unchanged — cash just moves between holders',
+      'M1 increases because the Fed replaces it',
+      'M1 is unchanged because deposits are unaffected'
+    ],
+    correct: 0,
+    explanation: 'Burning cash destroys physical currency in circulation, which is a component of M1. M1 = cash in circulation + demand deposits. Cash is gone, deposits unchanged, so M1 falls by $100.',
+    source: 'Study Plan / Topic 18'
+  },
+  {
+    id: 'mc-m1-payoff-cc',
+    topic: 'banking',
+    text: 'You pay off your $500 credit card bill from your checking account. What happens to M1?',
+    choices: [
+      'M1 decreases by $500 — your deposits fall',
+      'M1 is unchanged because the credit card company deposits the $500',
+      'M1 increases because debt is eliminated',
+      'M1 is unchanged because credit cards are not part of M1'
+    ],
+    correct: 0,
+    explanation: 'Paying off a credit card bill reduces your demand deposits (checking account balance falls by $500). The credit card balance was never part of M1 — it was credit, not money. Your deposits shrink, so M1 decreases.',
+    source: 'Study Plan / Topic 18'
+  },
+  {
+    id: 'mc-new-ai-premium',
+    topic: 'skillbias',
+    text: 'New AI that replaces college-typical tasks (writing, analysis, coding) would have what effect on the college wage premium?',
+    choices: [
+      'The premium FALLS — AI substitutes for college skills, reducing demand for college workers relative to non-college workers',
+      'The premium RISES — AI always complements college workers',
+      'No effect — technology only affects non-college workers',
+      'The premium RISES because college workers can use AI better'
+    ],
+    correct: 0,
+    explanation: 'Historical skill-biased tech (spreadsheets, databases) COMPLEMENTED college workers. But new AI that directly replaces college-typical tasks (writing, analysis) SUBSTITUTES for college labor, reducing demand and lowering the college premium. This is different from traditional SBTC.',
+    source: 'Study Plan / Topic 15'
+  },
+  {
+    id: 'mc-inverted-yield',
+    topic: 'qeqt',
+    text: 'An inverted yield curve (short-term rates > long-term rates) signals that:',
+    choices: [
+      'Markets expect the Fed to CUT rates in the future, i.e. they expect a recession',
+      'The economy is booming and rates will rise further',
+      'Long-term inflation expectations have risen above short-term expectations',
+      'The Fed has lost control of the yield curve'
+    ],
+    correct: 0,
+    explanation: 'A normal yield curve slopes upward (higher long-term rates). When it inverts, markets are pricing in future rate cuts — which the Fed typically does during recessions. Additionally, banks borrow short and lend long, so an inverted curve squeezes bank profits, reducing lending and reinforcing the recession signal.',
+    source: 'Study Plan / Topic 12'
+  },
+  {
+    id: 'mc-iorb-floor',
+    topic: 'qeqt',
+    text: 'In the ample reserves framework (post-2008), IORB (Interest on Reserve Balances) acts as:',
+    choices: [
+      'A FLOOR on the federal funds rate — banks won\'t lend below what they earn from the Fed',
+      'A CEILING on the federal funds rate',
+      'The exact target for the federal funds rate',
+      'An irrelevant tool since QE ended'
+    ],
+    correct: 0,
+    explanation: 'IORB is the rate the Fed pays banks on reserves held at the Fed. No rational bank would lend to another bank at a rate below what the Fed pays risk-free. So IORB acts as a FLOOR (lower bound) on the federal funds rate. The discount rate acts as the ceiling.',
+    source: 'Study Plan / Topic 12'
+  },
+  {
+    id: 'mc-gender-wage-gap',
+    topic: 'skillbias',
+    text: 'According to the research discussed in class, the majority of the gender wage gap is explained by:',
+    choices: [
+      'Women working in roles with fewer hours and lower pay per hour (flexibility penalty)',
+      'Women choosing different college majors than men',
+      'Direct discrimination in hiring and promotion',
+      'Differences in negotiation strategies'
+    ],
+    correct: 0,
+    explanation: 'The research (Goldin et al.) shows the majority of the gender wage gap is explained by women working in roles with fewer hours and lower pay per hour — a "flexibility penalty." Within the same occupation, workers who work longer/less-flexible hours earn disproportionately more. This is not primarily about occupation choice, education differences, or bonus structures.',
+    source: 'Study Plan / Topic 15'
+  },
+
   // ===== MYTH BUSTER — TRUE/FALSE EXAM TRAPS =====
   {
     id: 'myth-01',
@@ -1892,6 +1978,78 @@ const QUESTIONS = [
     correct: 1,
     explanation: 'FALSE. Zimbabwe ended hyperinflation by abandoning its currency entirely (dollarization). Venezuela tried various measures but the root cause — massive money printing to fund deficits — persisted. Rate hikes alone can\'t fix hyperinflation caused by fiscal dominance.',
     source: 'Spot the difference reading'
+  },
+
+  // ===== TRUE/FALSE — Study Plan Gap-fills =====
+  {
+    id: 'tf-m1-withdrawal',
+    topic: 'banking',
+    format: 'tf',
+    text: 'Withdrawing cash from your bank account decreases M1.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. Withdrawing cash swaps one component of M1 (demand deposits) for another (cash in circulation). The total M1 is UNCHANGED. M1 = cash in circulation + demand deposits.',
+    source: 'Study Plan / Topic 18'
+  },
+  {
+    id: 'tf-m1-loan',
+    topic: 'banking',
+    format: 'tf',
+    text: 'When a bank creates a new loan, M1 increases.',
+    choices: ['True', 'False'],
+    correct: 0,
+    explanation: 'TRUE. When a bank makes a loan, it credits the borrower\'s checking account (demand deposits rise). This creates new money — M1 increases. This is how commercial banks create money.',
+    source: 'Study Plan / Topic 18'
+  },
+  {
+    id: 'tf-qe-m1',
+    topic: 'qeqt',
+    format: 'tf',
+    text: 'Quantitative easing (the Fed buying MBS) directly increases M1.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. QE creates bank RESERVES (monetary base), not deposits. Reserves are held at the Fed and are NOT part of M1. The M1 effect is only indirect — if banks use the reserves to make more loans, then M1 might increase. But QE itself does not directly add to M1.',
+    source: 'Study Plan / Topic 18'
+  },
+  {
+    id: 'tf-discouraged-recovery',
+    topic: 'labor',
+    format: 'tf',
+    text: 'When the economy improves after a recession, the reported unemployment rate always falls immediately.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. When the economy recovers, discouraged workers (who had stopped searching) re-enter the labor force and are now counted as unemployed. This can cause the reported unemployment rate to temporarily RISE even as the economy improves. Counterintuitive but an important exam trap.',
+    source: 'Study Plan / Topic 7'
+  },
+  {
+    id: 'tf-wage-indexation',
+    topic: 'inflation',
+    format: 'tf',
+    text: 'Wage indexation (automatically linking wages to inflation) solves the inflation problem.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. Wage indexation protects workers\' real income, but it does NOT solve inflation. Higher wages → higher production costs → firms raise prices → more inflation. This is a WAGE-PRICE SPIRAL. Indexation actually makes inflation harder to break because every price increase automatically feeds into higher wages.',
+    source: 'Study Plan / Topic 8'
+  },
+  {
+    id: 'tf-recession-definition',
+    topic: 'gdp',
+    format: 'tf',
+    text: 'A recession is officially defined as two consecutive quarters of negative GDP growth.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. A recession is officially the period AFTER a PEAK and BEFORE a TROUGH in economic activity, as determined by the NBER Business Cycle Dating Committee. The "two consecutive quarters" rule is a media shorthand, not the formal definition. The NBER considers multiple indicators including employment, income, and production.',
+    source: 'Study Plan / Topic 7'
+  },
+  {
+    id: 'tf-minwage-premium',
+    topic: 'labor',
+    format: 'tf',
+    text: 'Higher minimum wages can explain the rising college wage premium.',
+    choices: ['True', 'False'],
+    correct: 1,
+    explanation: 'FALSE. Higher minimum wages raise wages at the BOTTOM of the distribution, which COMPRESSES the gap between college and non-college workers. This NARROWS the college wage premium, not widens it. The rising premium is explained by skill-biased technological change and globalization, not minimum wage policy.',
+    source: 'Study Plan / Topic 15'
   },
 
   // ===== CURVE SHIFTER — IS-MP =====
@@ -2283,6 +2441,109 @@ const QUESTIONS = [
     ],
     explanation: 'Equilibrium occurs where savings equals investment. Solving 200 + 50r = 500 − 100r gives 150r = 300, so r = 2%.',
     source: 'PS1'
+  },
+
+  // ===== CALCULATOR — Study Plan Gap-fills =====
+  {
+    id: 'calc-cpi-reverse',
+    topic: 'gdp',
+    format: 'calc',
+    text: 'CPI basket inflation is 3%. Cars have weight 0.9 and their price rose 5%. Pens have weight 0.1. By what percent did pen prices change? (Enter a negative number if they fell.)',
+    answer: -15,
+    tolerance: 1,
+    unit: '%',
+    steps: [
+      'CPI inflation = w_cars × π_cars + w_pens × π_pens',
+      '0.03 = 0.9(0.05) + 0.1(x)',
+      '0.03 = 0.045 + 0.1x',
+      '0.1x = 0.03 − 0.045 = −0.015',
+      'x = −0.15 = −15%'
+    ],
+    explanation: 'Using the CPI formula in reverse: total inflation (3%) = weighted sum of component inflations. Solving for pens: 0.1x = 0.03 − 0.045 = −0.015, so x = −15%. Pen prices FELL 15% even as overall inflation was 3%, because cars (90% of the basket) pulled everything up.',
+    source: 'Study Plan / Topic 9'
+  },
+  {
+    id: 'calc-tariff-imports',
+    topic: 'tariff',
+    format: 'calc',
+    text: 'Small open economy. World price = $60, tariff = $20. Demand: Q_D = 200 − P. Supply: Q_S = P. How many units are imported after the tariff?',
+    answer: 40,
+    tolerance: 1,
+    unit: 'units',
+    steps: [
+      'Domestic price after tariff: P_dom = 60 + 20 = 80',
+      'Quantity demanded: Q_D = 200 − 80 = 120',
+      'Quantity supplied: Q_S = 80',
+      'Imports = Q_D − Q_S = 120 − 80 = 40'
+    ],
+    explanation: 'The tariff raises the domestic price from $60 to $80. At $80, domestic demand is 120 and domestic supply is 80. Imports = 120 − 80 = 40 units (down from 80 under free trade).',
+    source: 'Study Plan / Topic 5'
+  },
+  {
+    id: 'calc-tariff-revenue',
+    topic: 'tariff',
+    format: 'calc',
+    text: 'Small open economy. World price = $60, tariff = $20. Demand: Q_D = 200 − P. Supply: Q_S = P. What is the government\'s tariff revenue?',
+    answer: 800,
+    tolerance: 10,
+    unit: '$',
+    steps: [
+      'P_dom = 60 + 20 = 80',
+      'Imports = Q_D − Q_S = 120 − 80 = 40',
+      'Gov revenue = imports × tariff = 40 × 20 = $800'
+    ],
+    explanation: 'Government collects the tariff ($20) on each imported unit (40 units). Revenue = 40 × $20 = $800.',
+    source: 'Study Plan / Topic 5'
+  },
+  {
+    id: 'calc-cpi-forward',
+    topic: 'gdp',
+    format: 'calc',
+    text: 'CPI basket: beer weight = 0.7 (price $5 → $6), soju weight = 0.3 (price $7 → $9). What is the inflation rate? (Answer in percent)',
+    answer: 23.2,
+    tolerance: 0.5,
+    unit: '%',
+    steps: [
+      'Old basket: 0.7(5) + 0.3(7) = 3.50 + 2.10 = $5.60',
+      'New basket: 0.7(6) + 0.3(9) = 4.20 + 2.70 = $6.90',
+      'Inflation = (6.90 − 5.60) / 5.60 = 1.30 / 5.60 = 23.2%'
+    ],
+    explanation: 'CPI inflation = (new basket cost − old basket cost) / old basket cost. The old basket costs $5.60 and the new basket costs $6.90, giving 23.2% inflation.',
+    source: 'Study Plan / Topic 9'
+  },
+  {
+    id: 'calc-qtm-money-growth',
+    topic: 'qtm',
+    format: 'calc',
+    text: 'Target inflation: 4%. Velocity is constant. Real GDP grows 3%. What money supply growth rate is required?',
+    answer: 7,
+    tolerance: 0.5,
+    unit: '%',
+    steps: [
+      'QTM: π = g(M) + g(V) − g(Y)',
+      'g(V) = 0 (velocity constant)',
+      '4% = g(M) + 0% − 3%',
+      'g(M) = 4% + 3% = 7%'
+    ],
+    explanation: 'From the Quantity Theory: π = g(M) − g(Y) when velocity is constant. To achieve 4% inflation with 3% real GDP growth, the central bank must grow the money supply at 7% per year.',
+    source: 'Study Plan / Topic 8'
+  },
+  {
+    id: 'calc-lfpr',
+    topic: 'labor',
+    format: 'calc',
+    text: 'Population: 20M. Retired: 1M. Discouraged workers: 500K. Family care: 750K. Employed: 14M. Unemployed (searching): 3.75M. What is the labor force participation rate? (Answer in percent)',
+    answer: 88.75,
+    tolerance: 0.5,
+    unit: '%',
+    steps: [
+      'Labor Force = Employed + Unemployed searching',
+      '= 14M + 3.75M = 17.75M',
+      'LFPR = Labor Force / Working-age pop = 17.75 / 20',
+      '= 88.75%'
+    ],
+    explanation: 'LFPR counts only those employed OR actively searching for work. Retired, discouraged workers, and family caregivers are NOT in the labor force. LFPR = 17.75M / 20M = 88.75%.',
+    source: 'Study Plan / Topic 7'
   },
 
   // ===== POLICY ADVISOR QUESTIONS =====
@@ -2884,6 +3145,113 @@ const QUESTIONS = [
     scores: [3, 2, 1, 0],
     explanation: 'The national accounting identity S - I = NX shows that when the government runs a deficit (reducing national saving S), and private saving/investment don\'t fully offset it, net exports (NX) must fall — widening the current account deficit. This is the "twin deficits" hypothesis. The link is not mechanical (private saving can adjust), but the accounting identity holds.',
     source: 'PS6 / Final'
+  },
+
+  // ===== POLICY: Study Plan Chain Reactions =====
+  {
+    id: 'policy_flex_fiscal_muted',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'You are the Treasury Secretary of a country with a flexible exchange rate. Congress passes a large spending bill to stimulate the economy. An advisor warns the stimulus will be weaker than expected. Why?',
+    choices: [
+      'Higher r from fiscal expansion attracts capital inflows → currency appreciates → NX falls → IS partly shifts back (fiscal is MUTED under flexible ER)',
+      'The central bank will raise rates to fully offset the stimulus',
+      'Government spending always crowds out private investment one-for-one',
+      'The exchange rate has no effect on fiscal policy effectiveness'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'Under flexible exchange rates, fiscal expansion raises domestic interest rates, attracting foreign capital. Capital inflows cause the domestic currency to appreciate, making exports expensive and imports cheap. Net exports fall, partially offsetting the fiscal stimulus. This is the Mundell-Fleming result: fiscal policy is MUTED under flexible rates.',
+    source: 'Study Plan / PS4'
+  },
+  {
+    id: 'policy_flex_foreign_rate_rise',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'The ECB unexpectedly raises interest rates. You advise a small country with a floating exchange rate. What chain of events do you predict for domestic output?',
+    choices: [
+      'Capital exits seeking higher foreign returns → domestic currency depreciates → NX rises → IS shifts right → output RISES',
+      'Capital exits → domestic currency depreciates → output FALLS',
+      'Nothing — foreign rate changes don\'t affect a floating-rate economy',
+      'Capital inflows → currency appreciates → output FALLS'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'When foreign rates rise, domestic assets become less attractive. Capital flows out, depreciating the domestic currency (IRP). A weaker currency boosts exports and cuts imports, shifting IS right and raising domestic output. Under flexible rates, a foreign rate hike is actually STIMULATIVE for the domestic economy via the depreciation channel.',
+    source: 'Study Plan / PS4'
+  },
+  {
+    id: 'policy_fixed_risk_premium',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'Political instability causes the risk premium on your country\'s assets to spike. Your country has a FIXED exchange rate peg. What happens?',
+    choices: [
+      'Investors sell domestic assets → downward pressure on currency → CB must RAISE rates and sell reserves to defend peg → investment falls → output FALLS (recession)',
+      'The currency depreciates, boosting exports and raising output',
+      'The central bank can ignore the risk premium under a fixed rate',
+      'Risk premiums only affect countries with floating exchange rates'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'Under a fixed ER, when the risk premium rises, capital flight puts downward pressure on the currency. The CB must sell foreign reserves and raise domestic interest rates to maintain the peg. Higher rates crush investment and output falls — a forced recession. This is the opposite of the flexible-rate case where depreciation would boost NX and raise output. Real examples: Qatar/Saudi Arabia when US raised r*.',
+    source: 'Study Plan / PS7'
+  },
+  {
+    id: 'policy_fixed_monetary_lost',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'A country with a fixed exchange rate is in recession. The central bank wants to cut interest rates to stimulate the economy. What happens?',
+    choices: [
+      'Monetary policy is LOST — cutting rates would cause capital outflows and break the peg; the CB must match foreign rates',
+      'Rate cuts work normally under fixed exchange rates',
+      'Rate cuts are amplified because the exchange rate acts as an additional channel',
+      'The CB can cut rates freely as long as the peg is maintained'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'Under a fixed exchange rate, the CB must set domestic rates to maintain the peg (interest rate parity). If it cuts rates below the foreign rate, capital flows out, putting massive downward pressure on the currency. The CB would have to spend all its reserves defending the peg. Result: monetary policy is LOST. The CB has given up monetary independence in exchange for exchange rate stability (the trilemma).',
+    source: 'Study Plan / PS4'
+  },
+  {
+    id: 'policy_fixed_fiscal_amplified',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'A country with a fixed exchange rate runs expansionary fiscal policy (↑G). How does the fixed rate affect the stimulus compared to a closed economy?',
+    choices: [
+      'Fiscal policy is MORE effective than a closed economy — higher r attracts capital inflows → CB must buy foreign currency (lower r) to prevent appreciation → investment also rises',
+      'Fiscal policy works the same as in a closed economy',
+      'Fiscal policy is LESS effective because the exchange rate appreciates',
+      'Fiscal policy has no effect under a fixed exchange rate'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'Under fixed ER, fiscal expansion raises r, attracting capital inflows that put upward pressure on the currency. To prevent appreciation, the CB must buy foreign currency and sell domestic currency, effectively LOWERING domestic interest rates. This adds even more stimulus — investment rises on top of the original fiscal boost. Fixed ER: fiscal MORE effective than closed economy. Flexible ER: fiscal MUTED. The ranking is: Fixed > Closed > Flexible.',
+    source: 'Study Plan / PS4'
+  },
+  {
+    id: 'policy_lr_neutrality_money',
+    topic: 'adia',
+    format: 'policy',
+    text: 'A new central bank chair is appointed who sets permanently lower interest rates. What is the LONG-RUN outcome for output, inflation, and the real interest rate?',
+    choices: [
+      'Output UNCHANGED (returns to Y*), inflation permanently HIGHER, real interest rate UNCHANGED in long run',
+      'Output permanently HIGHER due to sustained monetary stimulus',
+      'Output and inflation both return to their original levels',
+      'Output permanently LOWER because lower rates signal a weak economy'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'This is the long-run neutrality of money. Lower rates boost output above Y* in the short run, causing inflation to rise (IA shifts up). As inflation rises, the economy moves along AD back to Y*. In the long run, output returns to potential, but inflation is permanently higher. Money is neutral in the long run — monetary policy cannot permanently raise output above potential.',
+    source: 'Study Plan / Final'
+  },
+  {
+    id: 'policy_ecb_swiss',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'The ECB raises interest rates. Switzerland has a floating exchange rate and lower inflation. You advise the Swiss National Bank. What happens to Swiss output?',
+    choices: [
+      'Swiss franc depreciates (capital flows to higher-yielding euro assets) → Swiss exports become cheaper → NX rises → IS shifts right → Swiss output RISES',
+      'Swiss franc appreciates → Swiss exports become more expensive → output FALLS',
+      'No effect — Switzerland\'s floating rate insulates it from ECB policy',
+      'Swiss output falls because European demand for Swiss exports decreases'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'When the ECB raises rates, euro-denominated assets offer higher returns. Capital flows from Switzerland to the Eurozone, depreciating the Swiss franc. A weaker franc makes Swiss exports cheaper for Europeans and foreign goods more expensive for the Swiss, boosting net exports. IS shifts right and Swiss output rises. This is the open-economy transmission under flexible exchange rates.',
+    source: 'Study Plan / Active Recall Set 1'
   },
 
   // ===== BOSS BATTLE QUESTIONS =====
