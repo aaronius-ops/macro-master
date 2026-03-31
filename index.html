@@ -28,10 +28,28 @@
   <!-- Toast notification -->
   <div id="toast" class="hidden"></div>
 
-  <!-- Main Menu -->
-  <main id="menu-screen" class="screen active">
+  <!-- Profile / Login Screen -->
+  <main id="profile-screen" class="screen active">
     <h1>Macro Master</h1>
     <p class="subtitle">MBA 201b Final Exam Prep</p>
+    <div id="profile-box">
+      <h2 id="profile-heading">Who's Studying?</h2>
+      <div id="profile-list"></div>
+      <div id="profile-create-section">
+        <input type="text" id="profile-name-input" placeholder="Enter your name" maxlength="20" autocomplete="off">
+        <button id="profile-create-btn" class="action-btn">Create Profile</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Main Menu -->
+  <main id="menu-screen" class="screen">
+    <h1>Macro Master</h1>
+    <p class="subtitle">MBA 201b Final Exam Prep</p>
+    <div id="player-info">
+      <span id="player-name-display"></span>
+      <button id="switch-profile-btn" class="footer-btn">Switch Player</button>
+    </div>
 
     <div id="mode-grid">
       <button class="mode-btn" data-mode="lightning">
@@ -77,6 +95,7 @@
     <div id="menu-footer">
       <button id="mastery-btn" class="footer-btn">Mastery Map</button>
       <button id="achievements-btn" class="footer-btn">Achievements</button>
+      <button id="leaderboard-btn" class="footer-btn">Leaderboard</button>
       <button id="stats-btn" class="footer-btn">Stats</button>
       <button id="settings-btn" class="footer-btn">Settings</button>
       <button id="reset-btn" class="footer-btn danger">Reset</button>
@@ -329,6 +348,25 @@
       <button id="exam-retake" class="action-btn">Retake Exam</button>
       <button id="exam-results-menu" class="action-btn secondary">Menu</button>
     </div>
+  </main>
+
+  <!-- Leaderboard -->
+  <main id="leaderboard-screen" class="screen">
+    <h2>Hall of Macro Fame</h2>
+    <p class="subtitle">Where Legends Are Inflation-Adjusted</p>
+    <div id="leaderboard-columns">
+      <div class="lb-column">
+        <h3 class="lb-header">All-Time XP</h3>
+        <p class="lb-subheader">Cumulative Lifetime GDP</p>
+        <ol id="lb-alltime" class="lb-list"></ol>
+      </div>
+      <div class="lb-column">
+        <h3 class="lb-header">Best Session XP</h3>
+        <p class="lb-subheader">Peak Quarterly Output</p>
+        <ol id="lb-session" class="lb-list"></ol>
+      </div>
+    </div>
+    <button id="leaderboard-back" class="back-btn">&#x2190; Back</button>
   </main>
 
   <!-- Break Reminder (overlay) -->

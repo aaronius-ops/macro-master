@@ -19,6 +19,24 @@ const Game = (() => {
   const BREAK_REMINDER_QUESTIONS = 30; // remind after this many questions
   const BREAK_REMINDER_MINUTES = 15;   // or after this many minutes
 
+  // ===== PROFILE & LEADERBOARD =====
+  const PROFILES_KEY = 'macromaster_profiles';
+  const ACTIVE_PROFILE_KEY = 'macromaster_active_profile';
+
+  // Fun macro-themed leaderboard titles (by rank position)
+  const LB_TITLES = [
+    'Chair of the Federal Reserve of Vibes',
+    'Supreme Chancellor of Aggregate Demand',
+    'Tenured Professor of Money Printer Studies',
+    'Deputy Undersecretary of Multiplier Effects',
+    'Chief Inflation Hawk (Retired)',
+    'Part-Time Phillips Curve Whisperer',
+    'Assistant to the Regional Economist',
+    'Intern at the Bureau of Made-Up Statistics',
+    'Grad Student Who Peaked in Office Hours',
+    'Person Who Definitely Read the Syllabus',
+  ];
+
   // ===== ACHIEVEMENTS =====
   const ACHIEVEMENTS = [
     { id: 'first_correct', name: 'First Steps', desc: 'Answer your first question correctly', icon: '\u2B50', hidden: false },
@@ -97,11 +115,13 @@ const Game = (() => {
     startTime: Date.now(),
     questionsThisSession: 0,
     lastBreakReminder: 0,
+    startXP: 0, // XP at session start (to compute session XP = state.xp - startXP)
   };
 
   // ===== DOM REFS =====
   const $ = id => document.getElementById(id);
   const screens = {
+    profile: $('profile-screen'),
     menu: $('menu-screen'),
     topic: $('topic-screen'),
     game: $('game-screen'),
@@ -115,20 +135,146 @@ const Game = (() => {
     stats: $('stats-screen'),
     achievements: $('achievements-screen'),
     settings: $('settings-screen'),
+    leaderboard: $('leaderboard-screen'),
     exam: $('exam-screen'),
     examResults: $('exam-results-screen'),
   };
 
   // ===== PERSISTENCE =====
   function loadState() {
+    const id = getActiveProfileId();
+    const key = id ? STORAGE_KEY + '_' + id : STORAGE_KEY;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(key);
       if (raw) state = { ...state, ...JSON.parse(raw) };
     } catch {}
   }
 
   function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const id = getActiveProfileId();
+    const key = id ? STORAGE_KEY + '_' + id : STORAGE_KEY;
+    localStorage.setItem(key, JSON.stringify(state));
+    syncProfileXP();
+  }
+
+  // ===== PROFILE MANAGEMENT =====
+  function loadProfiles() {
+    try {
+      const raw = localStorage.getItem(PROFILES_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+
+  function saveProfiles(profiles) {
+    localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+  }
+
+  function getActiveProfileId() {
+    return localStorage.getItem(ACTIVE_PROFILE_KEY);
+  }
+
+  function setActiveProfile(id) {
+    localStorage.setItem(ACTIVE_PROFILE_KEY, id);
+    const profiles = loadProfiles();
+    const p = profiles.find(p => p.id === id);
+    if (p) $('player-name-display').textContent = p.name;
+  }
+
+  function createProfile(name) {
+    const profiles = loadProfiles();
+    const id = 'p_' + Date.now();
+    profiles.push({ id, name, totalXP: 0, bestSessionXP: 0, created: Date.now() });
+    saveProfiles(profiles);
+    return id;
+  }
+
+  function syncProfileXP() {
+    const id = getActiveProfileId();
+    if (!id) return;
+    const profiles = loadProfiles();
+    const p = profiles.find(p => p.id === id);
+    if (p) {
+      p.totalXP = state.xp;
+      const sessionXP = Math.max(0, state.xp - session.startXP);
+      if (sessionXP > p.bestSessionXP) p.bestSessionXP = sessionXP;
+      saveProfiles(profiles);
+    }
+  }
+
+  function showProfileScreen() {
+    const profiles = loadProfiles();
+    const list = $('profile-list');
+    list.innerHTML = '';
+
+    if (profiles.length === 0) {
+      $('profile-heading').textContent = 'Create Your Profile';
+    } else {
+      $('profile-heading').textContent = 'Who\'s Studying?';
+      profiles.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'profile-btn';
+        const title = LB_TITLES[Math.min(Math.floor(p.totalXP / 300), LB_TITLES.length - 1)];
+        btn.innerHTML = `<span class="profile-btn-name">${p.name}</span><span class="profile-btn-title">${title}</span><span class="profile-btn-xp">${p.totalXP} XP</span>`;
+        btn.addEventListener('click', () => loginProfile(p.id));
+        list.appendChild(btn);
+      });
+    }
+
+    $('profile-name-input').value = '';
+    showScreen('profile');
+  }
+
+  function loginProfile(id) {
+    setActiveProfile(id);
+    // Load this profile's game state (stored per-profile)
+    const profileStateKey = STORAGE_KEY + '_' + id;
+    try {
+      const raw = localStorage.getItem(profileStateKey);
+      if (raw) state = { xp: 0, streak: 0, bestStreak: 0, totalCorrect: 0, totalAnswered: 0, roundsPlayed: 0, achievements: [], modesPlayed: [], policyThreeStars: 0, mythSpeedBonuses: 0, bossSweeps: 0, ...JSON.parse(raw) };
+      else state = { xp: 0, streak: 0, bestStreak: 0, totalCorrect: 0, totalAnswered: 0, roundsPlayed: 0, achievements: [], modesPlayed: [], policyThreeStars: 0, mythSpeedBonuses: 0, bossSweeps: 0 };
+    } catch {
+      state = { xp: 0, streak: 0, bestStreak: 0, totalCorrect: 0, totalAnswered: 0, roundsPlayed: 0, achievements: [], modesPlayed: [], policyThreeStars: 0, mythSpeedBonuses: 0, bossSweeps: 0 };
+    }
+    // Reset session tracking
+    session.startXP = state.xp;
+    session.startTime = Date.now();
+    session.questionsThisSession = 0;
+    updateTopBar();
+    showScreen('menu');
+  }
+
+  // ===== LEADERBOARD =====
+  function showLeaderboard() {
+    const profiles = loadProfiles();
+
+    // All-time XP (descending)
+    const byTotal = [...profiles].sort((a, b) => b.totalXP - a.totalXP);
+    const allTimeList = $('lb-alltime');
+    allTimeList.innerHTML = '';
+    byTotal.forEach((p, i) => {
+      const li = document.createElement('li');
+      li.className = 'lb-entry' + (p.id === getActiveProfileId() ? ' lb-you' : '');
+      const title = LB_TITLES[Math.min(i, LB_TITLES.length - 1)];
+      const medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : '';
+      li.innerHTML = `<span class="lb-rank">${medal || (i + 1)}</span><span class="lb-name">${p.name}</span><span class="lb-title">${title}</span><span class="lb-xp">${p.totalXP.toLocaleString()} XP</span>`;
+      allTimeList.appendChild(li);
+    });
+    if (byTotal.length === 0) allTimeList.innerHTML = '<li class="lb-empty">No data yet. Go study!</li>';
+
+    // Best session XP (descending)
+    const bySession = [...profiles].sort((a, b) => b.bestSessionXP - a.bestSessionXP);
+    const sessionList = $('lb-session');
+    sessionList.innerHTML = '';
+    bySession.forEach((p, i) => {
+      const li = document.createElement('li');
+      li.className = 'lb-entry' + (p.id === getActiveProfileId() ? ' lb-you' : '');
+      const medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : '';
+      li.innerHTML = `<span class="lb-rank">${medal || (i + 1)}</span><span class="lb-name">${p.name}</span><span class="lb-xp">${p.bestSessionXP.toLocaleString()} XP</span>`;
+      sessionList.appendChild(li);
+    });
+    if (bySession.length === 0) sessionList.innerHTML = '<li class="lb-empty">No sessions yet. Get grinding!</li>';
+
+    showScreen('leaderboard');
   }
 
   // ===== SCREEN MANAGEMENT =====
@@ -1227,11 +1373,18 @@ const Game = (() => {
   // ===== RESET =====
   function resetAll() {
     if (!confirm('Reset ALL progress? This cannot be undone.')) return;
-    localStorage.removeItem(STORAGE_KEY);
+    const id = getActiveProfileId();
+    const key = id ? STORAGE_KEY + '_' + id : STORAGE_KEY;
+    localStorage.removeItem(key);
     SRS.reset();
     state = { xp: 0, streak: 0, bestStreak: 0, totalCorrect: 0, totalAnswered: 0, roundsPlayed: 0, achievements: [], modesPlayed: [], policyThreeStars: 0, mythSpeedBonuses: 0, bossSweeps: 0 };
+    // Save zeroed state but do NOT touch profile's totalXP or bestSessionXP —
+    // those are lifetime leaderboard records that survive resets
+    const profileKey = id ? STORAGE_KEY + '_' + id : STORAGE_KEY;
+    localStorage.setItem(profileKey, JSON.stringify(state));
+    session.startXP = 0;
     updateTopBar();
-    showToast('Progress reset');
+    showToast('Progress reset — leaderboard records preserved');
     showScreen('menu');
   }
 
@@ -1694,9 +1847,42 @@ const Game = (() => {
 
   // ===== INIT =====
   function init() {
-    loadState();
     loadSettings();
-    updateTopBar();
+
+    // Check for active profile — if none, show profile picker
+    const activeId = getActiveProfileId();
+    if (activeId) {
+      loadState();
+      session.startXP = state.xp;
+      const profiles = loadProfiles();
+      const p = profiles.find(p => p.id === activeId);
+      if (p) {
+        $('player-name-display').textContent = p.name;
+        updateTopBar();
+        showScreen('menu');
+      } else {
+        // Profile was deleted somehow, show picker
+        showProfileScreen();
+      }
+    } else {
+      showProfileScreen();
+    }
+
+    // Profile screen buttons
+    $('profile-create-btn').addEventListener('click', () => {
+      const name = $('profile-name-input').value.trim();
+      if (!name) { showToast('Enter a name'); return; }
+      const id = createProfile(name);
+      loginProfile(id);
+    });
+    $('profile-name-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') $('profile-create-btn').click();
+    });
+    $('switch-profile-btn').addEventListener('click', () => {
+      // Save current session best before switching
+      syncProfileXP();
+      showProfileScreen();
+    });
 
     // Mode buttons
     document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -1714,6 +1900,7 @@ const Game = (() => {
     $('mastery-btn').addEventListener('click', showMastery);
     $('achievements-btn').addEventListener('click', showAchievements);
     $('stats-btn').addEventListener('click', showStats);
+    $('leaderboard-btn').addEventListener('click', showLeaderboard);
     $('settings-btn').addEventListener('click', showSettings);
     $('reset-btn').addEventListener('click', resetAll);
 
@@ -1723,6 +1910,7 @@ const Game = (() => {
     $('achievements-back').addEventListener('click', () => showScreen('menu'));
     $('stats-back').addEventListener('click', () => showScreen('menu'));
     $('settings-back').addEventListener('click', () => showScreen('menu'));
+    $('leaderboard-back').addEventListener('click', () => showScreen('menu'));
     $('settings-save').addEventListener('click', applySettings);
     $('break-dismiss').addEventListener('click', dismissBreak);
     $('game-quit').addEventListener('click', () => {
