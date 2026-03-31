@@ -2704,69 +2704,9 @@ const QUESTIONS = [
     source: 'PS10 / Final'
   },
 
-  // ===== POLICY ADVISOR QUESTIONS =====
+  // ===== POLICY ADVISOR QUESTIONS (batch 2) =====
   {
-    id: 'policy_ismp_inflation',
-    topic: 'ismp',
-    format: 'policy',
-    text: 'You are the Fed Chair. Inflation is rising above target and output is above potential. What do you recommend?',
-    choices: [
-      'Raise the federal funds rate (shift MP up)',
-      'Signal future tightening via forward guidance',
-      'Hold rates steady and monitor',
-      'Cut rates to support growth'
-    ],
-    scores: [3, 2, 1, 0],
-    explanation: 'With inflation above target and a positive output gap, the textbook response is to raise rates (MP up), reducing aggregate demand and cooling inflation. Forward guidance is helpful but slower. Holding steady risks entrenching inflation. Cutting rates would worsen overheating.',
-    source: 'PS5 / Final'
-  },
-  {
-    id: 'policy_tariff_industry',
-    topic: 'tariff',
-    format: 'policy',
-    text: 'You are the US Trade Representative. A domestic industry is losing jobs to cheap imports from a small country. What policy do you recommend?',
-    choices: [
-      'Invest in worker retraining and adjustment assistance',
-      'Negotiate voluntary export restraints with the exporting country',
-      'Impose a tariff on the imported goods',
-      'Ban all imports from that country'
-    ],
-    scores: [3, 2, 1, 0],
-    explanation: 'Worker retraining addresses the root problem without creating deadweight loss. VERs limit trade but avoid tariff revenue issues. Tariffs create DWL and raise consumer prices. A total ban is the most distortionary and harms consumers the most.',
-    source: 'PS6 / Final'
-  },
-  {
-    id: 'policy_exchange_peg',
-    topic: 'exchange',
-    format: 'policy',
-    text: 'You are the finance minister of a small country with a fixed exchange rate. The world interest rate r* just rose sharply. What do you do?',
-    choices: [
-      'Raise domestic interest rates to maintain the peg',
-      'Announce temporary capital controls',
-      'Devalue the currency to a new peg',
-      'Lower domestic interest rates to stimulate the economy'
-    ],
-    scores: [3, 2, 1, 0],
-    explanation: 'Under a fixed exchange rate, if r* rises you must raise your domestic rate to prevent capital outflows and maintain the peg (interest rate parity). Capital controls are a second-best measure. Devaluation abandons the peg. Lowering rates would cause massive capital flight.',
-    source: 'PS7 / Final'
-  },
-  {
-    id: 'policy_debt_crisis',
-    topic: 'debt',
-    format: 'policy',
-    text: 'You are the finance minister. Debt/GDP is 120%, r > g, and markets are losing confidence. What is your best strategy?',
-    choices: [
-      'Announce a credible fiscal consolidation plan (primary surpluses)',
-      'Negotiate debt restructuring with creditors',
-      'Print money to inflate away the debt',
-      'Increase government spending to grow out of debt'
-    ],
-    scores: [3, 2, 1, 0],
-    explanation: 'When r > g, debt/GDP is on an explosive path. A credible primary surplus plan directly stabilizes the debt ratio. Restructuring works but damages credit access. Printing money causes inflation and currency collapse. More spending worsens the debt spiral when r > g.',
-    source: 'PS8 / Final'
-  },
-  {
-    id: 'policy_adia_recession',
+    id: 'policy_adia_zlb',
     topic: 'adia',
     format: 'policy',
     text: 'The economy is in a deep recession with inflation well below target. As Fed Chair, you have already cut rates to zero. What next?',
@@ -2826,34 +2766,124 @@ const QUESTIONS = [
     source: 'Lecture / Final'
   },
   {
-    id: 'policy_fiscal_recession',
-    topic: 'multiplier',
+    id: 'policy_savings_ricardian',
+    topic: 'savings',
     format: 'policy',
-    text: 'The economy is in a severe recession with high unemployment. The central bank is at the zero lower bound. Congress asks for your fiscal policy recommendation.',
+    text: 'Congress passes a large tax cut funded entirely by issuing new government bonds. As an economic advisor, what do you warn the president about?',
     choices: [
-      'Large fiscal stimulus focused on spending with high multipliers (infrastructure, transfers to low-income)',
-      'Moderate tax cuts across all income levels',
-      'Balanced-budget increase in spending (raise taxes to fund new spending)',
-      'Austerity to reassure bond markets and reduce the deficit'
+      'Households may save the tax cut to pay future taxes, blunting the stimulus (Ricardian equivalence)',
+      'The tax cut will definitely boost spending because households don\'t think that far ahead',
+      'Bond-financed tax cuts always increase national saving',
+      'The deficit will shrink because higher growth pays for the tax cut'
     ],
     scores: [3, 2, 1, 0],
-    explanation: 'At the ZLB, the fiscal multiplier is largest because the central bank won\'t offset the stimulus. Spending multipliers exceed tax-cut multipliers, especially transfers to high-MPC households. Balanced-budget multiplier is ~1 (positive but small). Austerity in a deep recession deepens the downturn (contractionary).',
-    source: 'PS10 / Final'
+    explanation: 'Ricardian equivalence says rational households recognize that bond-financed tax cuts mean higher future taxes, so they save the windfall rather than spend it. In practice, the effect is partial — some households are credit-constrained or myopic — but the risk of a muted stimulus is the key concern. The deficit will rise, not shrink, and national saving falls.',
+    source: 'PS3 / Final'
   },
   {
-    id: 'policy_environment_carbon',
-    topic: 'environment',
+    id: 'policy_gdp_wellbeing',
+    topic: 'gdp',
     format: 'policy',
-    text: 'You are designing climate policy. Which approach most efficiently reduces carbon emissions?',
+    text: 'A senator proposes replacing GDP with a broader well-being index as the primary policy target. As an economic advisor, what is your assessment?',
     choices: [
-      'Carbon tax or cap-and-trade system (price the externality)',
-      'Subsidize renewable energy research and deployment',
-      'Mandate specific technology standards for all industries',
-      'Voluntary corporate pledges and public awareness campaigns'
+      'GDP misses leisure, inequality, environmental costs, and home production — supplementing it with broader measures is sound',
+      'GDP is the best single measure of well-being and should remain the sole target',
+      'GDP already captures everything that matters for policy',
+      'Well-being is too subjective to measure, so we should ignore it entirely'
     ],
     scores: [3, 2, 1, 0],
-    explanation: 'Pricing carbon (tax or cap-and-trade) is the most efficient approach because it lets the market find the cheapest abatement opportunities, internalizing the externality. Subsidies help but don\'t discourage dirty energy. Technology mandates are inflexible. Voluntary pledges suffer from free-rider problems.',
-    source: 'Lecture / PS'
+    explanation: 'GDP measures market output but misses leisure, household production, environmental degradation, health, inequality, and other welfare-relevant dimensions. Supplementing GDP with broader measures (like the HDI or dashboards) gives policymakers a more complete picture. GDP remains useful for tracking output, but it is not a welfare measure.',
+    source: 'Lecture / Final'
+  },
+  {
+    id: 'policy_solow_savings',
+    topic: 'solow',
+    format: 'policy',
+    text: 'A country\'s capital-output ratio is well below its Golden Rule level. As economic advisor, what do you recommend to raise long-run consumption per capita?',
+    choices: [
+      'Increase the national saving rate through policy incentives (the economy is below the Golden Rule)',
+      'Decrease the saving rate to boost consumption immediately',
+      'The saving rate doesn\'t matter for long-run consumption',
+      'Increase population growth to expand the labor force'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'When capital per worker is below the Golden Rule level (k* where MPK = delta + n + g), raising the saving rate increases steady-state consumption per capita. There is a short-run cost (less consumption now) but a permanent long-run gain. Lowering savings would reduce steady-state capital further. Population growth actually lowers k* in the Solow model.',
+    source: 'PS2 / Final'
+  },
+  {
+    id: 'policy_banking_run',
+    topic: 'banking',
+    format: 'policy',
+    text: 'You are the Treasury Secretary. Depositors at several mid-size banks are panicking and lining up to withdraw funds. What is the best immediate response?',
+    choices: [
+      'Announce that deposits are fully insured and activate the Fed\'s discount window lending',
+      'Guarantee only the largest banks\' deposits (too big to fail)',
+      'Let the bank runs play out — market discipline is healthy',
+      'Freeze all bank withdrawals until the panic subsides'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'Bank runs are self-fulfilling: even solvent banks fail if everyone withdraws at once (Diamond-Dybvig). Deposit insurance and lender-of-last-resort lending (discount window) break the coordination failure by removing the incentive to run. Guaranteeing only large banks creates moral hazard and lets small banks fail. Letting runs play out causes contagion. Freezing withdrawals worsens panic and destroys trust.',
+    source: 'Lecture / Final'
+  },
+  {
+    id: 'policy_expectations_disinflation',
+    topic: 'inflation',
+    format: 'policy',
+    text: 'Inflation has been 8% for two years and expectations are becoming entrenched. You are the new Fed Chair. How do you bring inflation down with the least pain?',
+    choices: [
+      'Announce a credible disinflationary commitment and raise rates — if expectations adjust quickly, the sacrifice ratio is low',
+      'Raise rates gradually over several years without any public commitment',
+      'Implement wage and price controls to directly cap inflation',
+      'Wait for inflation to come down on its own'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'If the central bank can credibly commit to disinflation, inflation expectations adjust faster and the output cost (sacrifice ratio) is lower — this is the Volcker lesson. Gradual tightening without communication lets expectations stay anchored at 8%. Price controls create shortages and don\'t address root causes. Waiting risks expectations becoming permanently entrenched.',
+    source: 'PS7 / Final'
+  },
+  {
+    id: 'policy_exchange_trilemma',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'A small open economy wants free capital flows AND an independent monetary policy. What must they give up, according to the Mundell-Fleming trilemma?',
+    choices: [
+      'A fixed exchange rate — you can only have 2 of the 3: free capital flows, independent monetary policy, fixed exchange rate',
+      'Free capital flows — they must impose capital controls',
+      'Independent monetary policy — they must follow the world interest rate',
+      'Nothing — a country can achieve all three simultaneously'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'The Mundell-Fleming trilemma (impossible trinity) states you can only have 2 of 3: free capital mobility, independent monetary policy, and a fixed exchange rate. Choosing free capital flows + independent policy means a floating exchange rate. This is the regime most advanced economies choose (US, eurozone members gave up independent policy, China restricts capital flows).',
+    source: 'PS4 / Final'
+  },
+  {
+    id: 'policy_tariff_large',
+    topic: 'tariff',
+    format: 'policy',
+    text: 'You are the trade advisor to a LARGE country (like the US) considering tariffs. How does the welfare analysis differ from a small country imposing tariffs?',
+    choices: [
+      'A large country\'s tariff can improve its terms of trade, potentially creating net gains — but retaliation risk makes it risky',
+      'Large and small country tariff effects are identical',
+      'Large countries never benefit from tariffs',
+      'Large countries should always impose maximum tariffs'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'A large country can influence world prices. Its tariff reduces import demand enough to lower the world price, improving its terms of trade. The "optimal tariff" trades off this terms-of-trade gain against DWL. However, retaliation turns this into a prisoner\'s dilemma where both sides lose — which is why multilateral free trade agreements exist.',
+    source: 'PS3 / Final'
+  },
+  {
+    id: 'policy_open_twin_deficits',
+    topic: 'exchange',
+    format: 'policy',
+    text: 'The US is running large budget deficits and a large current account deficit simultaneously. A senator asks if these are related. What do you explain?',
+    choices: [
+      'Yes — the "twin deficits" identity: budget deficits reduce national saving, which (if investment is stable) widens the current account deficit',
+      'No — budget deficits and trade deficits are completely independent',
+      'Budget deficits always improve the current account by boosting exports',
+      'The current account deficit is caused only by unfair foreign trade practices'
+    ],
+    scores: [3, 2, 1, 0],
+    explanation: 'The national accounting identity S - I = NX shows that when the government runs a deficit (reducing national saving S), and private saving/investment don\'t fully offset it, net exports (NX) must fall — widening the current account deficit. This is the "twin deficits" hypothesis. The link is not mechanical (private saving can adjust), but the accounting identity holds.',
+    source: 'PS6 / Final'
   },
 
   // ===== BOSS BATTLE QUESTIONS =====
